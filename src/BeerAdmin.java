@@ -23,7 +23,7 @@ public class BeerAdmin {
             con.connect();
             int responsecode = con.getResponseCode();
             if(responsecode != 200){
-                throw new RuntimeException("HttpResponseCode: "+responsecode);
+                throw new RuntimeException("HttpResponseCode: " + responsecode);
             }
             else {
                 Scanner sc = new Scanner(url.openStream());
