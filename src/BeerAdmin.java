@@ -1,3 +1,8 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,9 +14,9 @@ import java.util.Scanner;
 
 public class BeerAdmin {
         String apiKey = "?key=1511d0db4a1d6841481c672455358cff";
-        String mii = "http://api.brewerydb.com/v2/";
+        String address = "http://api.brewerydb.com/v2/";
         HashMap<String, String> beer = new HashMap<>();
-        BufferedReader br = null;
+
 
 
     public void loadBeerStyles(){
@@ -28,25 +33,27 @@ public class BeerAdmin {
             else {
                 Scanner sc = new Scanner(url.openStream());
                 while (sc.hasNext()){
-
-                    String[] lineParts = inline.split(";");
-                    beer.put(lineParts[0], lineParts[1]);
+                    System.out.println(inline);
+                    inline += sc.nextLine();
                 }
-                System.out.println(beer.get(0));
+
+                JSONParser parse = new JSONParser();
+                try {
+                    JSONObject job1 = (JSONObject)parse.parse(inline);
+                    JSONArray jarray1 = (JSONArray) job1.get("data");
+
+                    for (int i = 0; i<jarray1.size(); i++){
+                        JSONObject job2 = (JSONObject)jarray1.get(i);
+                        beer.put(job2.get("id").toString(), job2.get("name").toString());
+                    }
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
                 sc.close();
             }
 
         }catch (IOException e){
             e.printStackTrace();
-        }
-        finally {
-            try {
-                if (br != null){
-                    br.close();
-                }
-            }catch (IOException e){
-                e.printStackTrace();
-            }
         }
     }
 }

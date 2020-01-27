@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        var mii = new BeerAdmin();
+        var beerAdmin = new BeerAdmin();
+        beerAdmin.loadBeerStyles();
     }
 }
